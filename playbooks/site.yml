@@ -5,7 +5,7 @@
   vars_files:
     - ../vault.yml
   vars:
-    wp_domain: dev.example.com
+    wp_domain: opdracht3.sel.edu
     wp_path: /var/www/wordpress
     wp_db_name: wordpress
     wp_db_user: wpuser

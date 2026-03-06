@@ -57,15 +57,17 @@
     state: started
     enabled: true
 
-- name: Add fastfetch to root bashrc
+- name: Add fastfetch to bashrc
   lineinfile:
     path: /root/.bashrc
+    regexp: 'fastfetch'
     line: 'command -v fastfetch &>/dev/null && fastfetch'
     create: true
 
 - name: Add fastfetch to ansible user bashrc
   lineinfile:
     path: "/home/{{ ansible_user }}/.bashrc"
+    regexp: 'fastfetch'
     line: 'command -v fastfetch &>/dev/null && fastfetch'
     create: true
   when: ansible_user != 'root'
