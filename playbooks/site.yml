@@ -9,9 +9,11 @@
     wp_path: /var/www/wordpress
     wp_db_name: wordpress
     wp_db_user: wpuser
+    skip_common: false
 
   roles:
-    - common
+    - role: common
+      when: not skip_common
     - mariadb
     - wordpress
 
