@@ -16,6 +16,11 @@
     name: [ufw, fail2ban, fastfetch]
     state: present
     update_cache: true
+  register: pkg_install
+
+- name: Reset connection to pick up new binaries
+  meta: reset_connection
+  when: pkg_install.changed
 
 - name: Configure UFW defaults
   ufw:
