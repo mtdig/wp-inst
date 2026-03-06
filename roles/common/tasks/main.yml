@@ -22,28 +22,46 @@
   meta: reset_connection
   when: pkg_install.changed
 
-- name: Configure UFW defaults
-  ufw:
-    direction: "{{ item.direction }}"
-    policy: "{{ item.policy }}"
-  loop:
-    - { direction: incoming, policy: deny }
-    - { direction: outgoing, policy: allow }
+# UFW module is very slow (~50s) because each call opens a new connection
+# Using shell instead takes ~2s total
+# Not ideal, but much faster for this use case and maybe the demo
+#
+# - name: Configure UFW defaults
+#   ufw:
+#     direction: "{{ item.direction }}"
+#     policy: "{{ item.policy }}"
+#   loop:
+#     - { direction: incoming, policy: deny }
+#     - { direction: outgoing, policy: allow }
+#
+# - name: Allow UFW ports
+#   ufw:
+#     rule: allow
+#     port: "{{ item }}"
+#     proto: tcp
+#   loop:
+#     - "22"
+#     - "80"
+#     - "443"
+#     - "3306"
+#
+# - name: Enable UFW
+#   ufw:
+#     state: enabled
 
-- name: Allow UFW ports
-  ufw:
-    rule: allow
-    port: "{{ item }}"
-    proto: tcp
-  loop:
-    - "22"
-    - "80"
-    - "443"
-    - "3306"
-
-- name: Enable UFW
-  ufw:
-    state: enabled
+- name: Configure UFW
+  shell: |
+    ufw --force reset
+    ufw default deny incoming
+    ufw default allow outgoing
+    ufw allow 22/tcp
+    ufw allow 80/tcp
+    ufw allow 443/tcp
+    ufw allow 3306/tcp
+    ufw --force enable
+  args:
+    executable: /bin/bash
+  changed_when: true
 
 - name: Configure fail2ban
   template:
