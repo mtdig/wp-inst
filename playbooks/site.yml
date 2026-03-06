@@ -14,3 +14,8 @@
     - common
     - mariadb
     - wordpress
+
+  post_tasks:
+    - name: Show connection info
+      debug:
+        msg: "Connect to {{ wp_domain }} from a web browser."
