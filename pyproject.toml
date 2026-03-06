@@ -1,7 +1,7 @@
 [project]
 name = "wp-inst"
 version = "0.1.0"
-description = "Add your description here"
+description = "Ansible playbook to install WordPress with LAMP stack"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
