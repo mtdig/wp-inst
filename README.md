@@ -2,7 +2,7 @@
 
 Uitbreiding SEL Opdracht 3: Installeer een database en web server. En zo ...
 
-Automatische installatie van een complete WordPress stack met MariaDB, Apache en beveiligingsconfiguratie.
+Automatische installatie van een complete WordPress stack met MariaDB, Apache en beveiligingsconfiguratie (de klassieke LAMP stack).
 
 ## Introductie
 
