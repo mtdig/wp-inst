@@ -18,4 +18,10 @@
   post_tasks:
     - name: Show connection info
       debug:
-        msg: "Connect to {{ wp_domain }} from a web browser."
+        msg:
+          - "=========================================="
+          - "Add this line to your /etc/hosts file:"
+          - "{{ ansible_host }}    {{ wp_domain }}"
+          - ""
+          - "Then open: http://{{ wp_domain }}"
+          - "=========================================="
