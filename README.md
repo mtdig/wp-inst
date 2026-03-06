@@ -161,6 +161,9 @@ uv run ansible-playbook playbooks/site.yml
 # Alleen specifieke host
 uv run ansible-playbook playbooks/site.yml --limit jouw_server
 
+# Zonder common role (skip SSH hardening, UFW, fail2ban)
+uv run ansible-playbook playbooks/site.yml -e skip_common=true
+
 # Dry-run (check mode)
 uv run ansible-playbook playbooks/site.yml --check
 
