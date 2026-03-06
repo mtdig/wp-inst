@@ -1,0 +1,16 @@
+---
+- name: Full WordPress stack
+  hosts: all
+  become: true
+  vars_files:
+    - ../vault.yml
+  vars:
+    wp_domain: dev.example.com
+    wp_path: /var/www/wordpress
+    wp_db_name: wordpress
+    wp_db_user: wpuser
+
+  roles:
+    - common
+    - mariadb
+    - wordpress

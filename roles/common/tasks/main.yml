@@ -1,0 +1,66 @@
+---
+- name: Harden SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^#?PubkeyAuthentication', line: 'PubkeyAuthentication yes' }
+    - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin prohibit-password' }
+    - { regexp: '^#?ChallengeResponseAuthentication', line: 'ChallengeResponseAuthentication no' }
+  notify: Restart SSH
+
+- name: Install packages
+  apt:
+    name: [ufw, fail2ban, fastfetch]
+    state: present
+    update_cache: true
+
+- name: Configure UFW defaults
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  loop:
+    - { direction: incoming, policy: deny }
+    - { direction: outgoing, policy: allow }
+
+- name: Allow UFW ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - "22"
+    - "80"
+    - "443"
+    - "3306"
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+
+- name: Configure fail2ban
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+  notify: Restart fail2ban
+
+- name: Enable fail2ban
+  service:
+    name: fail2ban
+    state: started
+    enabled: true
+
+- name: Add fastfetch to root bashrc
+  lineinfile:
+    path: /root/.bashrc
+    line: 'command -v fastfetch &>/dev/null && fastfetch'
+    create: true
+
+- name: Add fastfetch to ansible user bashrc
+  lineinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    line: 'command -v fastfetch &>/dev/null && fastfetch'
+    create: true
+  when: ansible_user != 'root'
