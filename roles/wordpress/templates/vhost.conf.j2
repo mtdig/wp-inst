@@ -1,6 +1,16 @@
 <VirtualHost *:80>
     ServerName {{ wp_domain }}
+    Redirect permanent / https://{{ wp_domain }}/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName {{ wp_domain }}
     DocumentRoot {{ wp_path }}
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/{{ wp_domain }}.crt
+    SSLCertificateKeyFile /etc/ssl/private/{{ wp_domain }}.key
+
     <Directory {{ wp_path }}>
         AllowOverride All
         Require all granted

@@ -13,11 +13,19 @@
     state: present
     update_cache: true
 
-- name: Enable Apache rewrite
+- name: Enable Apache modules
   apache2_module:
-    name: rewrite
+    name: "{{ item }}"
     state: present
+  loop:
+    - rewrite
+    - ssl
   notify: Restart Apache
+
+- name: Generate self-signed SSL certificate
+  command:
+    cmd: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/{{ wp_domain }}.key -out /etc/ssl/certs/{{ wp_domain }}.crt -subj "/CN={{ wp_domain }}"
+    creates: /etc/ssl/certs/{{ wp_domain }}.crt
 
 - name: Download WordPress
   get_url:
