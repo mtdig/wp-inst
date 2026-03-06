@@ -15,7 +15,7 @@
   apt:
     name: [ufw, fail2ban, fastfetch]
     state: present
-    update_cache: true
+    update_cache: false
   register: pkg_install
 
 - name: Reset connection to pick up new binaries
