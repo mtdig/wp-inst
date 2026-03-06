@@ -23,5 +23,6 @@
           - "Add this line to your /etc/hosts file:"
           - "{{ ansible_host }}    {{ wp_domain }}"
           - ""
-          - "Then open: http://{{ wp_domain }}"
+          - "Then open: https://{{ wp_domain }}"
+          - "(Self-signed certificate - accept the warning)"
           - "=========================================="
