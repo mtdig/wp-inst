@@ -88,4 +88,12 @@
     regexp: '^.*fastfetch.*$'
     line: 'fastfetch'
     create: true
+
+- name: Allow sudo group to use sudo without password
+  lineinfile:
+    path: /etc/sudoers.d/sudo-nopasswd
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    create: true
+    validate: 'visudo -cf %s'
+    mode: "0440"
   when: ansible_user != 'root'
