@@ -123,8 +123,8 @@ Pas `inventory.yml` aan met je eigen hosts:
 all:
   hosts:
     jouw_server:
-      ansible_host: 192.168.1.100
-      ansible_user: gebruiker
+      ansible_host: 192.168.122.40
+      ansible_user: osboxes
       ansible_python_interpreter: /usr/bin/python3
 ```
 
@@ -146,7 +146,7 @@ Pas indien nodig de variabelen aan in `playbooks/site.yml`:
 
 ```yaml
 vars:
-  wp_domain: jouw-domein.nl
+  wp_domain: opdracht3.sel.edu
   wp_path: /var/www/wordpress
   wp_db_name: wordpress
   wp_db_user: wpuser
