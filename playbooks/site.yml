@@ -2,6 +2,7 @@
 - name: Full WordPress stack
   hosts: all
   become: true
+  gather_subset: min
   vars_files:
     - ../vault.yml
   vars:

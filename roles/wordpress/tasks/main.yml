@@ -66,3 +66,22 @@
     path: /etc/apache2/sites-enabled/000-default.conf
     state: absent
   notify: Restart Apache
+
+- name: Download WP-CLI
+  get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: /usr/local/bin/wp
+    mode: "0755"
+
+- name: Add wp alias to ansible user bashrc
+  lineinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    regexp: '^alias wp='
+    line: "alias wp='wp --path={{ wp_path }}'"
+    create: true
+
+- name: Add ansible user to www-data group
+  user:
+    name: "{{ ansible_user }}"
+    groups: www-data
+    append: true

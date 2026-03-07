@@ -2,7 +2,7 @@
 
 Uitbreiding SEL Opdracht 3: Installeer een database en web server. En zo ...
 
-Automatische installatie van een complete WordPress stack met MariaDB, Apache en beveiligingsconfiguratie (de klassieke [LAMP stack](https://aws.amazon.com/what-is/lamp-stack/)).
+Een vereenvoudigde automatische installatie van een complete WordPress stack met MariaDB, Apache en beveiligingsconfiguratie (de klassieke [LAMP stack](https://aws.amazon.com/what-is/lamp-stack/)).
 
 ## Introductie
 
@@ -19,6 +19,9 @@ Meer informatie: [Ansible Documentation](https://docs.ansible.com/ansible/latest
 ### Role: common (basis beveiliging)
 
 1. **SSH hardening**
+   
+Wachtwoord-authenticatie wordt uitgeschakeld.  Enkel key-based authenticatie wordt toegelaten.
+
    - `PasswordAuthentication no`
    - `PubkeyAuthentication yes`
    - `PermitRootLogin prohibit-password`
@@ -31,10 +34,10 @@ Meer informatie: [Ansible Documentation](https://docs.ansible.com/ansible/latest
 
 3. **UFW firewall configuratie**
    - Standaard: inkomend verkeer deny, uitgaand allow
-   - Poort 22 (SSH) open
-   - Poort 80 (HTTP) open
-   - Poort 443 (HTTPS) open
-   - Poort 3306 (MySQL) open
+   - Poort 22 (SSH) toegelaten
+   - Poort 80 (HTTP) toegelaten
+   - Poort 443 (HTTPS) toegelaten
+   - Poort 3306 (MySQL) toegelaten
 
 4. **fail2ban configuratie**
    - 3 pogingen voor ban
@@ -48,7 +51,7 @@ Meer informatie: [Ansible Documentation](https://docs.ansible.com/ansible/latest
 
 1. **MariaDB server installeren**
    - `mariadb-server`
-   - `python3-pymysql` (voor Ansible)
+   - `python3-pymysql` (nodig voor Ansible)
 
 2. **Service starten en enablen**
 
@@ -63,6 +66,7 @@ Meer informatie: [Ansible Documentation](https://docs.ansible.com/ansible/latest
 ### Role: wordpress (webserver)
 
 1. **Apache en PHP installeren**
+   
    - `apache2`
    - `php`, `php-mysql`, `php-curl`, `php-gd`, `php-xml`, `php-mbstring`
    - `libapache2-mod-php`
@@ -88,6 +92,13 @@ Meer informatie: [Ansible Documentation](https://docs.ansible.com/ansible/latest
    - SSL met self-signed certificaat
 
 7. **Default site uitschakelen**
+
+8. **WP-CLI installeren**
+   - Command-line interface voor WordPress
+   - Geïnstalleerd in `/usr/local/bin/wp`
+   - Alias `wp` met `--path=/var/www/wordpress` in `.bashrc`
+
+9. **Ansible user toevoegen aan www-data groep**
 
 ## Getting started
 
@@ -122,7 +133,7 @@ Pas `inventory.yml` aan met je eigen hosts:
 ```yaml
 all:
   hosts:
-    jouw_server:
+    wpdeb:
       ansible_host: 192.168.122.40
       ansible_user: osboxes
       ansible_python_interpreter: /usr/bin/python3
@@ -137,6 +148,7 @@ Maak een `vault.yml` bestand aan in de root van het project:
 db_root_password: jouw_db_root_wachtwoord
 db_wp_password: "jouw_database_wachtwoord"
 wp_admin_password: "jouw_wordpress_admin_wachtwoord"
+ansible_become_password: jouw_sudo_pw
 ```
 
 > **Let op:** Dit bestand staat in `.gitignore` en moet op elke machine handmatig aangemaakt worden.
@@ -190,3 +202,12 @@ uv run ansible-playbook playbooks/site.yml -v
 ## Na installatie
 
 Na succesvolle installatie verschijnt een bericht met de URL om WordPress te configureren via de webbrowser.
+
+## demo
+
+Volledige run, na fresh install debian trixie.
+
+```bash
+
+```
+
