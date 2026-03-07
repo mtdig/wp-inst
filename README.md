@@ -134,6 +134,7 @@ Maak een `vault.yml` bestand aan in de root van het project:
 
 ```yaml
 ---
+db_root_password: jouw_db_root_wachtwoord
 db_wp_password: "jouw_database_wachtwoord"
 wp_admin_password: "jouw_wordpress_admin_wachtwoord"
 ```
