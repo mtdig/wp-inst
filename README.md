@@ -31,6 +31,7 @@ Wachtwoord-authenticatie wordt uitgeschakeld.  Enkel key-based authenticatie wor
    - `ufw` (firewall)
    - `fail2ban` (brute-force bescherming)
    - `fastfetch` (systeeminfo)
+   - `wp-cli` (command line management tool voor WP, voor bvb updates te schedulen via cron jobs)
 
 3. **UFW firewall configuratie**
    - Standaard: inkomend verkeer deny, uitgaand allow
